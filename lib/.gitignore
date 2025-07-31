@@ -1,0 +1,8 @@
+# Ignore everything
+# TODO: look into and see if I want to do this differently
+*
+
+# But do not ignore this file
+!README
+!README.md
+!.gitignore
