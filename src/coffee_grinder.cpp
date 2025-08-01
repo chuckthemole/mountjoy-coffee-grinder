@@ -5,24 +5,25 @@
 #define GRINDER_COIL 2 // Relay for grinder on/off.
 
 #include <Arduino.h>
-#include <LiquidCrystal.h>
+// #include <LiquidCrystal.h>
 #include <EEPROM.h>
+#include "CommonArduinoHelper.h"
 
 int EEPROM_address = 0; // Storage location for run/rest array.
 
 // Tell LCD panel which pins it can use.
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+// LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 // Keypresses from LCD panel.
 int lcd_key = 0;
 int adc_key_in = 0;
 
-#define btnRIGHT 0
-#define btnUP 1
-#define btnDOWN 2
-#define btnLEFT 3
-#define btnSELECT 4
-#define btnNONE 5
+// #define Button::btnRIGHT 0
+// #define Button::btnUP 1
+// #define Button::btnDOWN 2
+// #define Button::btnLEFT 3
+// #define Button::btnSELECT 4
+// #define Button::btnNONE 5
 
 // Run time, in seconds, for grinder relay.
 unsigned int grindCycle = {360};
@@ -43,20 +44,20 @@ int read_LCD_buttons()
     adc_key_in = analogRead(0); // Buttons are defined by analog value ranges.
 
     if (adc_key_in > 1000)
-        return btnNONE;
+        return Button::btnNONE;
 
     if (adc_key_in < 50)
-        return btnRIGHT;
+        return Button::btnRIGHT;
     if (adc_key_in < 250)
-        return btnUP;
+        return Button::btnUP;
     if (adc_key_in < 450)
-        return btnDOWN;
+        return Button::btnDOWN;
     if (adc_key_in < 650)
-        return btnLEFT;
+        return Button::btnLEFT;
     if (adc_key_in < 850)
-        return btnSELECT;
+        return Button::btnSELECT;
 
-    return btnNONE;
+    return Button::btnNONE;
 }
 
 /*
@@ -85,7 +86,7 @@ void grinder_run()
         // Leave grinder on for duration of cycle, or until canceled
 
         // Abort if left button pressed.
-        if (read_LCD_buttons() == btnLEFT || btnRIGHT)
+        if (read_LCD_buttons() == Button::btnLEFT || Button::btnRIGHT)
         {
             lcd.setCursor(0, 0);
             lcd.print("IDLE    ");
@@ -115,7 +116,8 @@ void setup()
     // EEPROM.get(EEPROM_address, grindCycle);
 
     // Display Ready message.
-    lcd.begin(16, 2);
+    // lcd.begin(16, 2);
+    LCD::lcd.begin(16, 2);
     lcd.setCursor(0, 0);
     lcd.print("Ready");
     lcd.setCursor(0, 9);
@@ -133,24 +135,24 @@ void loop()
     switch (lcd_key)
     { // depending on which button was pushed, we perform an action
 
-    case btnRIGHT:
+    case Button::btnRIGHT:
     { //  push button "RIGHT" and show the word on the screen
 
         if (!isRunning)
             grinder_run();
         break;
     }
-    case btnLEFT:
+    case Button::btnLEFT:
     {
 
         digitalWrite(GRINDER_COIL, LOW); // Stop grinder
         isRunning = false;
         break;
     }
-    case btnUP:
+    case Button::btnUP:
     {
 
-        while (read_LCD_buttons() == btnUP)
+        while (read_LCD_buttons() == Button::btnUP)
         {
         }; // Wait for button to be released to continue
 
@@ -163,10 +165,10 @@ void loop()
 
         break;
     }
-    case btnDOWN:
+    case Button::btnDOWN:
     {
 
-        while (read_LCD_buttons() == btnDOWN)
+        while (read_LCD_buttons() == Button::btnDOWN)
         {
         }; // Wait for button to be released to continue
 
@@ -179,12 +181,12 @@ void loop()
 
         break;
     }
-    case btnSELECT:
+    case Button::btnSELECT:
     {
 
         break;
     }
-    case btnNONE:
+    case Button::btnNONE:
     {
 
         break;
