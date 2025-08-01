@@ -67,11 +67,11 @@ int read_LCD_buttons()
 void grinder_run()
 {
 
-    lcd.setCursor(0, 0);
-    lcd.print("RUN...  ");
-    // lcd.setCursor(0,9);
-    // lcd.print(grindCycle);
-    // lcd.print(" s");
+    LCD::lcd.setCursor(0, 0);
+    LCD::lcd.print("RUN...  ");
+    // LCD::lcd.setCursor(0,9);
+    // LCD::lcd.print(grindCycle);
+    // LCD::lcd.print(" s");
 
     startTime = millis();
 
@@ -88,21 +88,21 @@ void grinder_run()
         // Abort if left button pressed.
         if (read_LCD_buttons() == Button::btnLEFT || Button::btnRIGHT)
         {
-            lcd.setCursor(0, 0);
-            lcd.print("IDLE    ");
+            LCD::lcd.setCursor(0, 0);
+            LCD::lcd.print("IDLE    ");
             digitalWrite(GRINDER_COIL, LOW);
             isRunning = false;
             exit;
         }
         // Else, update display
 
-        lcd.setCursor(9, 1);                      // move cursor to second line "1" and 9 spaces over
-        lcd.print((millis() - startTime) / 1000); // display seconds elapsed since start.
-        lcd.print(" s");
+        LCD::lcd.setCursor(9, 1);                      // move cursor to second line "1" and 9 spaces over
+        LCD::lcd.print((millis() - startTime) / 1000); // display seconds elapsed since start.
+        LCD::lcd.print(" s");
     }
 
-    lcd.setCursor(0, 0);
-    lcd.print("Ready   ");
+    LCD::lcd.setCursor(0, 0);
+    LCD::lcd.print("Ready   ");
     digitalWrite(GRINDER_COIL, LOW);
 }
 
@@ -116,13 +116,13 @@ void setup()
     // EEPROM.get(EEPROM_address, grindCycle);
 
     // Display Ready message.
-    // lcd.begin(16, 2);
+    // LCD::lcd.begin(16, 2);
     LCD::lcd.begin(16, 2);
-    lcd.setCursor(0, 0);
-    lcd.print("Ready");
-    lcd.setCursor(0, 9);
-    lcd.print(grindCycle);
-    lcd.print(" s");
+    LCD::lcd.setCursor(0, 0);
+    LCD::lcd.print("Ready");
+    LCD::lcd.setCursor(0, 9);
+    LCD::lcd.print(grindCycle);
+    LCD::lcd.print(" s");
 }
 
 void loop()
@@ -130,7 +130,7 @@ void loop()
 
     lcd_key = read_LCD_buttons(); // read the buttons
 
-    lcd.setCursor(0, 1);
+    LCD::lcd.setCursor(0, 1);
 
     switch (lcd_key)
     { // depending on which button was pushed, we perform an action
@@ -159,9 +159,9 @@ void loop()
         if (grindCycle < 1000)
             grindCycle++; // Increment cycle timer, provided not at limit.
 
-        lcd.setCursor(0, 9); // Update displayed value.
-        lcd.print(grindCycle);
-        lcd.print(" s   ");
+        LCD::lcd.setCursor(0, 9); // Update displayed value.
+        LCD::lcd.print(grindCycle);
+        LCD::lcd.print(" s   ");
 
         break;
     }
@@ -175,9 +175,9 @@ void loop()
         if (grindCycle > 0)
             grindCycle--; // Decrement cycle timer.
 
-        lcd.setCursor(0, 9); // Update displayed value.
-        lcd.print(grindCycle);
-        lcd.print(" s   ");
+        LCD::lcd.setCursor(0, 9); // Update displayed value.
+        LCD::lcd.print(grindCycle);
+        LCD::lcd.print(" s   ");
 
         break;
     }
