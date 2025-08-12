@@ -43,3 +43,5 @@
 .pio
 **/pio_helper.sh
 pio_helper.sh
+
+config.h

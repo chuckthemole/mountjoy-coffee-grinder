@@ -5,13 +5,13 @@
 #define GRINDER_COIL 2 // Relay for grinder on/off.
 
 #include <Arduino.h>
-#include <LiquidCrystal.h>
 #include <EEPROM.h>
+#include "LCDWrapper.h"
 
 int EEPROM_address = 0; // Storage location for run/rest array.
 
-// Tell LCD panel which pins it can use.
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+// Tell LCD panel to use default pins
+LcdWrapper lcd;
 
 // Keypresses from LCD panel.
 int lcd_key = 0;
@@ -115,7 +115,7 @@ void setup()
     // EEPROM.get(EEPROM_address, grindCycle);
 
     // Display Ready message.
-    lcd.begin(16, 2);
+    lcd.begin();
     lcd.setCursor(0, 0);
     lcd.print("Ready");
     lcd.setCursor(0, 9);
